@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,8 +38,8 @@ fun ExerciseTimer(
 @Preview
 @Composable
 fun Timer() {
-    var timeLeft by remember { mutableStateOf<Long>(30) }
-    var finished by remember { mutableStateOf(false) }
+    var timeLeft by rememberSaveable { mutableStateOf<Long>(30) }
+    var finished by rememberSaveable { mutableStateOf(false) }
     ExerciseTimer(currentTime = 30, onTick = { timeLeft -= 1 }, onFinish = {finished=true})
     if (!finished) {
         ShowTime(timeLeft)
