@@ -14,9 +14,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.workouter.domain.Reporter
 import com.example.workouter.ui.theme.Burgundy
 
-@Preview
 @Composable
-fun RepsCounter(reporter: Reporter = Reporter()) {
+fun RepsCounter(
+    reporter: Reporter = Reporter(),
+    onSubmitGoTo: () -> Unit
+) {
     var repsNumber by remember { mutableStateOf(0) }
     Column {
         Clicker (
@@ -26,6 +28,7 @@ fun RepsCounter(reporter: Reporter = Reporter()) {
         Submitter {
             reporter.reportReps(repsNumber)
             repsNumber = 0
+            onSubmitGoTo()
         }
     }
 }
