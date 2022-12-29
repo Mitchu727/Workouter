@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.workouter.domain.Reporter
+import com.example.workouter.ui.components.PlannerScreen
 import com.example.workouter.ui.components.RepsCounter
 import com.example.workouter.ui.components.TimerScreen
 import com.example.workouter.ui.theme.WorkouterTheme
@@ -22,7 +23,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = TimerDestination.route,
+                    startDestination = PlannerDestination.route,
                 ) {
                     composable(route = RepsCounterDestination.route) {
                         RepsCounter(
@@ -36,6 +37,9 @@ class MainActivity : ComponentActivity() {
                         TimerScreen(onFinishGoTo = {
                                 navController.navigateSingleTopTo(RepsCounterDestination.route)
                         })
+                    }
+                    composable(route = PlannerDestination.route) {
+                        PlannerScreen()
                     }
                 }
                 // A surface container using the 'background' color from the theme

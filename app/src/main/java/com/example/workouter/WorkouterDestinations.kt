@@ -9,5 +9,9 @@ object TimerDestination: WorkouterDestination {
 }
 
 object RepsCounterDestination: WorkouterDestination {
-    override val route: String = "reps-counter"
+    override val route: String = "repsCounter"
+}
+
+object PlannerDestination: WorkouterDestination {
+    override val route: String = "plannerDestination"
 }
