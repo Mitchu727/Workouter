@@ -25,11 +25,14 @@ fun RepsCounter(
             onButtonClicked = { repsNumber += 1 },
             getRepsNumber = {repsNumber}
         )
-        Submitter {
-            reporter.reportReps(repsNumber)
-            repsNumber = 0
-            onSubmitGoTo()
-        }
+        Submitter (
+            modifier = Modifier.fillMaxSize(),
+            onSubmitClicked = {
+                reporter.reportReps(repsNumber)
+                repsNumber = 0
+                onSubmitGoTo()
+            }
+        )
     }
 }
 
@@ -57,21 +60,5 @@ fun Clicker(
                 style = MaterialTheme.typography.headlineLarge //TODO export typography
             )
         }
-    }
-}
-
-@Composable
-fun Submitter(
-    onSubmitClicked: ()->Unit
-){
-    Button(
-        onClick = onSubmitClicked,
-        modifier = Modifier.fillMaxSize(),
-        shape = RectangleShape,
-        colors = ButtonDefaults.buttonColors(Color.DarkGray)
-    ) {
-        Text(
-            text = "Submit",
-            style = MaterialTheme.typography.headlineLarge)
     }
 }
