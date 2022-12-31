@@ -10,9 +10,35 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.workouter.ui.theme.Burgundy
 import kotlinx.coroutines.delay
+
+@Composable
+fun TimerScreen(
+    onFinishGoTo: () -> Unit
+) {
+    var timeLeft by rememberSaveable { mutableStateOf<Long>(5) }
+    var finished by rememberSaveable { mutableStateOf(false) }
+    ExerciseTimer(
+        currentTime = 5,
+        onTick = { timeLeft -= 1 },
+        onFinish = {finished=true}
+    )
+    if (!finished) {
+        ShowTime(timeLeft)
+    } else {
+        Text(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.DarkGray)
+                .wrapContentSize(Alignment.Center),
+            text = "Done!",
+            style = MaterialTheme.typography.headlineLarge,
+            color = Color.White,
+        )
+        onFinishGoTo()
+    }
+}
 
 @Composable
 fun ExerciseTimer(
@@ -33,27 +59,6 @@ fun ExerciseTimer(
                 onFinish()
             }
         })
-}
-
-@Preview
-@Composable
-fun Timer() {
-    var timeLeft by rememberSaveable { mutableStateOf<Long>(30) }
-    var finished by rememberSaveable { mutableStateOf(false) }
-    ExerciseTimer(currentTime = 30, onTick = { timeLeft -= 1 }, onFinish = {finished=true})
-    if (!finished) {
-        ShowTime(timeLeft)
-    } else {
-        Text(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.DarkGray)
-                .wrapContentSize(Alignment.Center),
-            text = "Done!",
-            style = MaterialTheme.typography.headlineLarge,
-            color = Color.White,
-        )
-    }
 }
 
 @Composable
