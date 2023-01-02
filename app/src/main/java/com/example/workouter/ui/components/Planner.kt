@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.workouter.domain.Exercise
+import com.example.workouter.domain.ExerciseType
 import com.example.workouter.ui.theme.Burgundy
 
 //TODO current way to display things on bottom or on top is probably not best
@@ -50,7 +52,10 @@ fun Planner() {
                 ) {
                     items(trainingParts) { trainingPartNumber ->
                         TrainingPart(
-                            number = trainingPartNumber,
+                            exercise = Exercise(
+                                name = "Pompki",
+                                type = ExerciseType.COUNTED
+                            ),
                             modifier = Modifier
                                 .padding(vertical = 4.dp, horizontal = 8.dp)
                                 .fillMaxWidth()
