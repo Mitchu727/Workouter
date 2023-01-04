@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,17 +35,15 @@ fun TrainingPart(
     modifier: Modifier,
     exercise: Exercise
 ) {
+    var name by rememberSaveable{ mutableStateOf(exercise.name) }
+    var series by rememberSaveable{ mutableStateOf(exercise.series) }
+    var type by rememberSaveable{ mutableStateOf(exercise.type) }
     Card(modifier = modifier)
     {
         Column {
-            TextField(
-                value = exercise.name,
-                onValueChange = { exercise.name = it },
-                label = { Text("Exercise:") }
-            )
-            NameComponent(exerciseNameToDisplay = exercise.name, setName = {exercise.name = it})
-            SeriesComponent(seriesNumberToDisplay = exercise.series.toString(), setSeries = {exercise.series = it})
-            TypeComponent(currentTypeName = exercise.type.toString(), setType = {exercise.type = it})
+            NameComponent(exerciseNameToDisplay = name, setName = {name = it})
+            SeriesComponent(seriesNumberToDisplay = series.toString(), setSeries = {series = it})
+            TypeComponent(currentTypeName = type.toString(), setType = {type = it})
 //            Text(
 //                text = "Series: ${exercise.Series}",
 //                modifier = Modifier.padding(12.dp),
