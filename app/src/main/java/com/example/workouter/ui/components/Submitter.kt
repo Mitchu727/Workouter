@@ -13,7 +13,8 @@ import androidx.compose.ui.graphics.RectangleShape
 @Composable
 fun Submitter(
     onSubmitClicked: ()->Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    text: String = "Submit"
 ){
     Button(
         onClick = onSubmitClicked,
@@ -22,7 +23,7 @@ fun Submitter(
         colors = ButtonDefaults.buttonColors(Color.DarkGray)
     ) {
         Text(
-            text = "Submit",
+            text = text,
             style = MaterialTheme.typography.headlineLarge)
     }
 }

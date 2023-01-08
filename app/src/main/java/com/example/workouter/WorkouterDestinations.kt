@@ -15,3 +15,11 @@ object RepsCounterDestination: WorkouterDestination {
 object PlannerDestination: WorkouterDestination {
     override val route: String = "plannerDestination"
 }
+
+object HomeDestination: WorkouterDestination {
+    override val route: String = "homeDestination"
+}
+
+object AcitivitiesDestination: WorkouterDestination {
+    override val route: String = "activitiesDestiniation"
+}
