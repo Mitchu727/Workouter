@@ -19,10 +19,6 @@ import com.example.workouter.ui.theme.Burgundy
 
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
-class User(var firstName: String, var lastName: String, var age: Int): Parcelable
-
-
 //TODO current way to display things on bottom or on top is probably not best
 
 @Preview
@@ -33,13 +29,11 @@ fun PlannerScreen() {
 
 @Composable
 fun Planner() {
-    var exercises = remember { mutableStateListOf(
-        listOf(
-            Exercise("Podciaganie", ExerciseType.COUNTED.toString(), 23)
-        )
+    //TODO try to migrate to remembder saveable, current approach crashes
+    // when you rotate the screen
+    var exercises = remember { mutableStateListOf<Exercise>(
+            Exercise("Podciaganie", ExerciseType.COUNTED, 3)
     ) }
-    var numberOfExercises by rememberSaveable { mutableStateOf<Int>(5) }
-    val trainingParts: List<Int> = (1..numberOfExercises).toList()
     Surface(
         color = Burgundy,
         modifier = Modifier.fillMaxSize()
@@ -56,12 +50,10 @@ fun Planner() {
                         .fillMaxWidth(),
                     onClick = {
                         exercises.add(
-                            listOf(
-                                Exercise(
-                                    name = "Pompki",
-                                    type = ExerciseType.COUNTED.toString()
-                                ),
-                            )
+                            Exercise(
+                                name = "Pompki",
+                                type = ExerciseType.COUNTED
+                            ),
                         )
                     }
                 )
@@ -71,12 +63,9 @@ fun Planner() {
                         .fillMaxWidth()
                         .fillMaxHeight()
                 ) {
-                    items(trainingParts) { trainingPartNumber ->
+                    items(exercises) { exercise ->
                         TrainingPart(
-                            exercise = Exercise(
-                                name = "Pompki",
-                                type = ExerciseType.COUNTED.toString()
-                            ),
+                            exercise = exercise,
                             modifier = Modifier
                                 .padding(vertical = 4.dp, horizontal = 8.dp)
                                 .fillMaxWidth()
@@ -85,7 +74,7 @@ fun Planner() {
                 }
             }
             Submitter(
-                onSubmitClicked = { print(numberOfExercises) },
+                onSubmitClicked = { print(exercises) },
                 modifier = Modifier
                     .fillMaxHeight()
                     .fillMaxWidth()

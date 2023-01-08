@@ -21,7 +21,8 @@ fun SeriesComponent(
         onValueChange = { textFieldContent = it },
         label = { LabelText(text = "Series") },
         colors = TextFieldDefaults.textFieldColors(
-            unfocusedIndicatorColor = Color.Transparent
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent
         )
     )
     if (!checkStringIsNumber(textFieldContent)) {

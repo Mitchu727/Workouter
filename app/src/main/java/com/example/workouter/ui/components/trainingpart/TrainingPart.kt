@@ -21,7 +21,7 @@ import com.example.workouter.ui.components.trainingpart.TypeComponent
 fun PreTrainingPart() {
     var exercise: Exercise = Exercise(
         name = "Pompki",
-        type = ExerciseType.COUNTED.toString()
+        type = ExerciseType.COUNTED
     )
     TrainingPart(
         modifier = Modifier,
@@ -29,7 +29,6 @@ fun PreTrainingPart() {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrainingPart(
     modifier: Modifier,
@@ -43,13 +42,7 @@ fun TrainingPart(
         Column {
             NameComponent(exerciseNameToDisplay = name, setName = {name = it})
             SeriesComponent(seriesNumberToDisplay = series.toString(), setSeries = {series = it})
-            TypeComponent(currentTypeName = type, setType = {type = it.toString()})
-//            Text(
-//                text = "Series: ${exercise.Series}",
-//                modifier = Modifier.padding(12.dp),
-//                color = Color.Black
-//            )
-//            DropdownMenuForTypes()
+            TypeComponent(currentTypeName = type.toString(), setType = {type = it})
         }
     }
 }

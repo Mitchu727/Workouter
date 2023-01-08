@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class Exercise(
     var name: String,
-    var type: String,
+    var type: ExerciseType,
     var series: Int = 1
 ):Parcelable
 
