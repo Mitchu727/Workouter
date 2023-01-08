@@ -1,5 +1,6 @@
 package com.example.workouter.ui.components
 
+import android.os.Parcelable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +17,12 @@ import com.example.workouter.domain.Exercise
 import com.example.workouter.domain.ExerciseType
 import com.example.workouter.ui.theme.Burgundy
 
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+class User(var firstName: String, var lastName: String, var age: Int): Parcelable
+
+
 //TODO current way to display things on bottom or on top is probably not best
 
 @Preview
@@ -26,7 +33,12 @@ fun PlannerScreen() {
 
 @Composable
 fun Planner() {
-    var numberOfExercises by rememberSaveable { mutableStateOf<Int>(20) }
+    var exercises = remember { mutableStateListOf(
+        listOf(
+            Exercise("Podciaganie", ExerciseType.COUNTED.toString(), 23)
+        )
+    ) }
+    var numberOfExercises by rememberSaveable { mutableStateOf<Int>(5) }
     val trainingParts: List<Int> = (1..numberOfExercises).toList()
     Surface(
         color = Burgundy,
@@ -42,7 +54,16 @@ fun Planner() {
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
                         .fillMaxWidth(),
-                    onClick = { numberOfExercises++ }
+                    onClick = {
+                        exercises.add(
+                            listOf(
+                                Exercise(
+                                    name = "Pompki",
+                                    type = ExerciseType.COUNTED.toString()
+                                ),
+                            )
+                        )
+                    }
                 )
                 LazyColumn(
                     modifier = Modifier
@@ -54,7 +75,7 @@ fun Planner() {
                         TrainingPart(
                             exercise = Exercise(
                                 name = "Pompki",
-                                type = ExerciseType.COUNTED
+                                type = ExerciseType.COUNTED.toString()
                             ),
                             modifier = Modifier
                                 .padding(vertical = 4.dp, horizontal = 8.dp)
