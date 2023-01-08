@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.workouter.domain.Reporter
+import com.example.workouter.persistence.PlannerStorage
 import com.example.workouter.ui.components.PlannerScreen
 import com.example.workouter.ui.components.RepsCounter
 import com.example.workouter.ui.components.TimerScreen
@@ -18,6 +19,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val reporter: Reporter = Reporter()
+        val planerStorage: PlannerStorage
         setContent {
             WorkouterTheme {
                 val navController = rememberNavController()
