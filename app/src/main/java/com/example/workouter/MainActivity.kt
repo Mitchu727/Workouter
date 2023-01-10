@@ -1,31 +1,39 @@
 package com.example.workouter
 
-//import com.example.workouter.persistence.FirebaseActivititesRepository
-import android.content.ContentValues.TAG
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.workouter.domain.Reporter
-import com.example.workouter.persistence.FirebaseActivitiesRepository
+import com.example.workouter.model.service.StorageService
+import com.example.workouter.model.service.firebase_implementation.FirebaseStorageService
+import com.example.workouter.screens.edit_exercise.EditExerciseScreen
+import com.example.workouter.screens.edit_exercise.EditExerciseViewModel
+import com.example.workouter.screens.exercises.ExercisesViewModel
 import com.example.workouter.ui.components.*
 import com.example.workouter.ui.theme.WorkouterTheme
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val reporter: Reporter = Reporter()
-        val activitiesRepository = FirebaseActivitiesRepository()
+        val storageService: StorageService = FirebaseStorageService(Firebase.firestore)
+        val exercisesViewModel = ExercisesViewModel(storageService)
+        val editExerciseViewModel = EditExerciseViewModel(storageService)
         setContent {
             WorkouterTheme {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = AcitivitiesDestination.route,
+                    startDestination = ExercisesDestination.route,
                 ) {
                     composable(route = RepsCounterDestination.route) {
                         RepsCounter(
@@ -46,14 +54,25 @@ class MainActivity : ComponentActivity() {
                     composable(route = HomeDestination.route) {
                         HomeScreen()
                     }
-                    composable(route = AcitivitiesDestination.route) {
-
-                        val activies = activitiesRepository.getAll()
-                        ActivitiesScreen(
-                            names = activies,
-                            saveNewActivities = {activitiesRepository.insert(it)}
+                    composable(route = ExercisesDestination.route) {
+                        ExercisesScreen(
+//                            names = activies,
+                            viewModel = exercisesViewModel,
+                            goTo = {route -> navController.navigateSingleTopTo(route)}
                         )
                     }
+                    composable(
+                        route = "${EditExerciseDestination.route}?exerciseId={exercisedId}",
+                        arguments = listOf(navArgument("exerciseId") { defaultValue = "defaultId"})
+                        //TODO extract to constants
+                    ) {
+                        EditExerciseScreen(
+                            popUpScreen = { navController.popBackStack() },
+                            viewModel = editExerciseViewModel,
+                            exerciseId = it.arguments?.getString("exerciseId")?: "some-default-value"
+                        )
+                    }
+
                 }
                 // A surface container using the 'background' color from the theme
             }

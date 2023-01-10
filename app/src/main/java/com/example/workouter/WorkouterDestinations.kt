@@ -20,6 +20,11 @@ object HomeDestination: WorkouterDestination {
     override val route: String = "homeDestination"
 }
 
-object AcitivitiesDestination: WorkouterDestination {
-    override val route: String = "activitiesDestiniation"
+object ExercisesDestination: WorkouterDestination {
+    override val route: String = "exercisesDestiniation"
 }
+
+object EditExerciseDestination: WorkouterDestination {
+    override val route: String = "editExerciseDestiniation"
+}
+
