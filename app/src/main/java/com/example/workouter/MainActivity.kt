@@ -1,5 +1,7 @@
 package com.example.workouter
 
+//import com.example.workouter.persistence.FirebaseActivititesRepository
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,7 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.workouter.domain.Reporter
-import com.example.workouter.persistence.PlannerStorage
+import com.example.workouter.persistence.FirebaseActivitiesRepository
 import com.example.workouter.ui.components.*
 import com.example.workouter.ui.theme.WorkouterTheme
 
@@ -17,7 +19,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val reporter: Reporter = Reporter()
-        val planerStorage: PlannerStorage
+        val activitiesRepository = FirebaseActivitiesRepository()
         setContent {
             WorkouterTheme {
                 val navController = rememberNavController()
@@ -45,7 +47,12 @@ class MainActivity : ComponentActivity() {
                         HomeScreen()
                     }
                     composable(route = AcitivitiesDestination.route) {
-                        ActivitiesScreen()
+
+                        val activies = activitiesRepository.getAll()
+                        ActivitiesScreen(
+                            names = activies,
+                            saveNewActivities = {activitiesRepository.insert(it)}
+                        )
                     }
                 }
                 // A surface container using the 'background' color from the theme

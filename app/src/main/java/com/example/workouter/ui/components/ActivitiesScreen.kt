@@ -1,5 +1,7 @@
 package com.example.workouter.ui.components
 
+import android.content.ContentValues
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,16 +10,19 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.workouter.ui.theme.Burgundy
 
 // tu powinien być load
-val activities: List<String> = listOf("Pompki", "Podciągnięcia", "Przysiady")
+//val activities: List<String> = listOf("Pompki", "Podciągnięcia", "Przysiady")
 
-@Preview
 @Composable
-fun ActivitiesScreen() {
+fun ActivitiesScreen(
+    names: List<String>,
+    saveNewActivities: (List<String>) -> Unit
+) {
+    val activities = names
+    Log.d(ContentValues.TAG, "Fetched activities ${activities}")
     Surface(
         color = Burgundy,
         modifier = Modifier.fillMaxSize()
@@ -34,7 +39,7 @@ fun ActivitiesScreen() {
                 }
             }
             Submitter(
-                onSubmitClicked = { /*TODO*/ },
+                onSubmitClicked = { saveNewActivities(activities) },
                 modifier = Modifier.fillMaxSize(),
                 text = "Save"
             )
