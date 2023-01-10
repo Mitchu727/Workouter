@@ -1,5 +1,7 @@
 package com.example.workouter.model.service.firebase_implementation
 
+import android.content.ContentValues
+import android.util.Log
 import com.example.workouter.model.Exercise
 import com.example.workouter.model.service.trace
 import com.example.workouter.model.service.StorageService
@@ -22,15 +24,19 @@ class FirebaseStorageService (
     override suspend fun getAllExercises(): List<Exercise> =
         exerciseCollection().get().await().toObjects()
 
-    override suspend fun getExercise(exerciseId: String): Exercise? =
-        exerciseCollection().document(exerciseId).get().await().toObject()
+    override suspend fun getExercise(exerciseId: String): Exercise? {
+        Log.d(ContentValues.TAG, "Request to get exercise with id: $exerciseId")
+        return exerciseCollection().document(exerciseId).get().await().toObject()
+    }
+    override suspend fun saveExercise(exercise: Exercise): String {
+        Log.d(ContentValues.TAG, "Request to save new exercise with id: ${exercise.id}")
+        return trace(SAVE_TASK_TRACE) { exerciseCollection().add(exercise).await().id }
+    }
 
-    override suspend fun saveExercise(exercise: Exercise): String =
-        trace(SAVE_TASK_TRACE) { exerciseCollection().add(exercise).await().id }
-
-    override suspend fun updateExercise(exercise: Exercise): Unit =
-        trace(UPDATE_TASK_TRACE) {exerciseCollection().document(exercise.id).set(exercise).await()}
-
+    override suspend fun updateExercise(exercise: Exercise): Unit {
+        Log.d(ContentValues.TAG, "Request to update exercise with id: ${exercise.id}")
+        return trace(UPDATE_TASK_TRACE) { exerciseCollection().document(exercise.id).set(exercise).await() }
+    }
     private fun exerciseCollection(): CollectionReference =
         firestore.collection(EXERCISE_COLLECTION)
 

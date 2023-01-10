@@ -44,7 +44,7 @@ fun ExercisesScreen(
                     .fillMaxHeight(0.8f)
             ) {
                 items(exercises.value) { exercise ->
-                    ExerciseView(text = exercise.name)
+                    ExerciseView(exercise) { viewModel.onExerciseClick(goTo, exercise) }
                 }
             }
 //            Submitter(
@@ -75,13 +75,18 @@ fun AddExerciseButton(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExerciseView(text: String) {
+fun ExerciseView(
+    exercise: Exercise,
+    onClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp, horizontal = 8.dp)
+            .padding(vertical = 4.dp, horizontal = 8.dp),
+        onClick = onClick
     ) {
-        Text(text = text, modifier = Modifier.padding(8.dp))
+        Text(text = exercise.name, modifier = Modifier.padding(8.dp))
     }
 }

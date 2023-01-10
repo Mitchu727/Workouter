@@ -1,5 +1,7 @@
 package com.example.workouter.screens.edit_exercise
 
+import android.content.ContentValues
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +19,7 @@ class EditExerciseViewModel (
     fun initialize(exerciseId: String) {
         viewModelScope.launch {
             exercise.value = storageService.getExercise(exerciseId) ?: Exercise(id = Exercise.generateRandomUUID())
+            Log.d(ContentValues.TAG, "Initialization of edit exercise view model with id: ${exercise.value.id}")
         }
     }
 

@@ -62,9 +62,9 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable(
-                        route = "${EditExerciseDestination.route}?exerciseId={exercisedId}",
+                        route = "${EditExerciseDestination.route}?exerciseId={exerciseId}",
                         arguments = listOf(navArgument("exerciseId") { defaultValue = "defaultId"})
-                        //TODO extract to constants
+                        //TODO extract to constants: +1 because it already caused one error
                     ) {
                         EditExerciseScreen(
                             popUpScreen = { navController.popBackStack() },

@@ -28,6 +28,7 @@ fun EditExerciseScreen(
     ) {
         TextField(
             value = exercise.name,
+            modifier = Modifier.fillMaxWidth(),
             onValueChange = {viewModel.onNameChange(it)},
             label = { LabelText(text = "Name") },
         )

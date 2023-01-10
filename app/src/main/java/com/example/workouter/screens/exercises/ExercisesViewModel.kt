@@ -1,6 +1,7 @@
 package com.example.workouter.screens.exercises
 
 import com.example.workouter.EditExerciseDestination
+import com.example.workouter.model.Exercise
 import com.example.workouter.model.service.StorageService
 
 class ExercisesViewModel (
@@ -12,8 +13,8 @@ class ExercisesViewModel (
 
     fun onExerciseClick(
         goTo: (String) -> Unit,
-        exercise: String
+        exercise: Exercise
     ) {
-       goTo("$EditExerciseDestination.route?exerciseId]{}")
+       goTo("${EditExerciseDestination.route}?exerciseId=${exercise.id}")
     }
 }
