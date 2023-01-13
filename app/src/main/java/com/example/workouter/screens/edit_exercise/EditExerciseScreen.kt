@@ -47,18 +47,3 @@ fun EditExerciseScreen(
     }
 
 }
-
-//fun NameComponent(
-//    exerciseNameToDisplay: String,
-//    setName: (String) -> Unit
-//) {
-//    TextField(
-//        value = exerciseNameToDisplay,
-//        onValueChange = setName,
-//        label = { LabelText(text = "Exercise") },
-//        colors = TextFieldDefaults.textFieldColors(
-//            unfocusedIndicatorColor = Color.Transparent,
-//            focusedIndicatorColor = Color.Transparent
-//        )
-//    )
-//}

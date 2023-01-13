@@ -4,18 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.workouter.domain.Reporter
 import com.example.workouter.model.service.StorageService
 import com.example.workouter.model.service.firebase_implementation.FirebaseStorageService
 import com.example.workouter.screens.edit_exercise.EditExerciseScreen
 import com.example.workouter.screens.edit_exercise.EditExerciseViewModel
 import com.example.workouter.screens.exercises.ExercisesViewModel
+import com.example.workouter.screens.home.HomeScreen
+import com.example.workouter.screens.home.HomeViewModel
 import com.example.workouter.ui.components.*
 import com.example.workouter.ui.theme.WorkouterTheme
 import com.google.firebase.firestore.ktx.firestore
@@ -24,20 +24,19 @@ import com.google.firebase.ktx.Firebase
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val reporter: Reporter = Reporter()
         val storageService: StorageService = FirebaseStorageService(Firebase.firestore)
         val exercisesViewModel = ExercisesViewModel(storageService)
         val editExerciseViewModel = EditExerciseViewModel(storageService)
+        val homeViewModel = HomeViewModel()
         setContent {
             WorkouterTheme {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = ExercisesDestination.route,
+                    startDestination = HomeDestination.route,
                 ) {
                     composable(route = RepsCounterDestination.route) {
                         RepsCounter(
-                            reporter=reporter,
                             onSubmitGoTo = {
                                 navController.navigateSingleTopTo(TimerDestination.route)
                             }
@@ -52,11 +51,13 @@ class MainActivity : ComponentActivity() {
                         PlannerScreen()
                     }
                     composable(route = HomeDestination.route) {
-                        HomeScreen()
+                        HomeScreen(
+                            viewModel = homeViewModel,
+                            goTo = {route -> navController.navigateSingleTopTo(route)}
+                        )
                     }
                     composable(route = ExercisesDestination.route) {
                         ExercisesScreen(
-//                            names = activies,
                             viewModel = exercisesViewModel,
                             goTo = {route -> navController.navigateSingleTopTo(route)}
                         )
@@ -78,6 +79,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
 
 fun NavHostController.navigateSingleTopTo(route: String) =

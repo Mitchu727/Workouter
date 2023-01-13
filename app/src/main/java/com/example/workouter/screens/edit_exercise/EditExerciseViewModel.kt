@@ -7,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
 import com.example.workouter.model.Exercise
 import com.example.workouter.model.service.StorageService
-import com.example.workouter.ui.components.ExerciseView
-import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.launch
 
 class EditExerciseViewModel (

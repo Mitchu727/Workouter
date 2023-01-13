@@ -16,7 +16,7 @@ import com.example.workouter.ui.theme.Burgundy
 
 @Composable
 fun RepsCounter(
-    reporter: Reporter = Reporter(),
+//    reporter: Reporter = Reporter(),
     onSubmitGoTo: () -> Unit
 ) {
     var repsNumber by remember { mutableStateOf(0) }
@@ -28,7 +28,6 @@ fun RepsCounter(
         Submitter (
             modifier = Modifier.fillMaxSize(),
             onSubmitClicked = {
-                reporter.reportReps(repsNumber)
                 repsNumber = 0
                 onSubmitGoTo()
             }

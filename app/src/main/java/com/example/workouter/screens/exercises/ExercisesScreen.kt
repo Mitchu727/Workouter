@@ -30,13 +30,12 @@ fun ExercisesScreen(
     goTo: (String) -> Unit
 ) {
     val exercises: State<List<Exercise>> = viewModel.exercises.collectAsStateWithLifecycle(emptyList())
-    Log.d(ContentValues.TAG, "Fetched activities ${exercises}")
     Surface(
         color = Burgundy,
         modifier = Modifier.fillMaxSize()
     ) {
         Column {
-            AddExerciseButton(onClick = { viewModel.onAddClick(goTo) }, modifier = Modifier.fillMaxWidth())
+            AddExerciseButton(onClick = { viewModel.onAddClick(goTo) }, modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp))
             LazyColumn(
                 modifier = Modifier
                     .padding(vertical = 4.dp)
