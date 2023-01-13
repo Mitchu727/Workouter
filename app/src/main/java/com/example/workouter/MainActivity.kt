@@ -11,6 +11,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.workouter.model.service.StorageService
 import com.example.workouter.model.service.firebase_implementation.FirebaseStorageService
+import com.example.workouter.screens.choose_exercise.ChooseExerciseScreen
+import com.example.workouter.screens.choose_exercise.ChooseExerciseViewModel
 import com.example.workouter.screens.edit_exercise.EditExerciseScreen
 import com.example.workouter.screens.edit_exercise.EditExerciseViewModel
 import com.example.workouter.screens.exercises.ExercisesViewModel
@@ -27,6 +29,7 @@ class MainActivity : ComponentActivity() {
         val storageService: StorageService = FirebaseStorageService(Firebase.firestore)
         val exercisesViewModel = ExercisesViewModel(storageService)
         val editExerciseViewModel = EditExerciseViewModel(storageService)
+        val chooseExerciseViewModel = ChooseExerciseViewModel(storageService)
         val homeViewModel = HomeViewModel()
         setContent {
             WorkouterTheme {
@@ -71,6 +74,15 @@ class MainActivity : ComponentActivity() {
                             popUpScreen = { navController.popBackStack() },
                             viewModel = editExerciseViewModel,
                             exerciseId = it.arguments?.getString("exerciseId")?: "some-default-value"
+                        )
+                    }
+                    composable(
+                        route = ChooseExerciseDestination.route,
+                        arguments = listOf(navArgument("exerciseId") { defaultValue = "defaultId"})
+                    ) {
+                        ChooseExerciseScreen(
+                            viewModel = chooseExerciseViewModel,
+                            goTo = {route -> navController.navigateSingleTopTo(route)}
                         )
                     }
 

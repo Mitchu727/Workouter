@@ -19,9 +19,11 @@ fun HomeScreen(
     goTo: (String) -> Unit,
     viewModel: HomeViewModel
 ) {
+    // TODO fajnie by było, żeby to było
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(Burgundy)) {
+        .background(Burgundy)
+    ) {
         HomeScreenButton(onClick = { viewModel.onStartTrainingClick(goTo) }, text = "Start \nTraining")
         HomeScreenButton(onClick = { viewModel.onExercisesClick(goTo) }, text = "Exercises")
         HomeScreenButton(onClick = { viewModel.onStatsClick(goTo) }, text = "Stats")
