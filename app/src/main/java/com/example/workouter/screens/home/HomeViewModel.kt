@@ -2,18 +2,18 @@ package com.example.workouter.screens.home
 
 import android.content.ContentValues
 import android.util.Log
-import com.example.workouter.ChooseExerciseDestination
-import com.example.workouter.ExercisesDestination
+import com.example.workouter.CHOOSE_EXERCISE_DESTINATION
+import com.example.workouter.EXERCISES_DESTINATION
 
 class HomeViewModel {
     fun onStartTrainingClick(goTo: (String) -> Unit) {
         Log.d(ContentValues.TAG, "Click on start training on home screen")
-        goTo(ChooseExerciseDestination.route)
+        goTo(CHOOSE_EXERCISE_DESTINATION)
     }
 
     fun onExercisesClick(goTo: (String) -> Unit) {
         Log.d(ContentValues.TAG, "Click on exercises on home screen")
-        goTo(ExercisesDestination.route)
+        goTo(EXERCISES_DESTINATION)
     }
 
     fun onStatsClick(goTo: (String) -> Unit) {

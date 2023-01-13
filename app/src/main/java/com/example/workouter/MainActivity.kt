@@ -36,49 +36,48 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = HomeDestination.route,
+                    startDestination = HOME_DESTINATION,
                 ) {
-                    composable(route = RepsCounterDestination.route) {
+                    composable(route = REPS_COUNTER_DESTINATION) {
                         RepsCounter(
                             onSubmitGoTo = {
-                                navController.navigateSingleTopTo(TimerDestination.route)
+                                navController.navigateSingleTopTo(TIMER_DESTINATION)
                             }
                         )
                     }
-                    composable(route = TimerDestination.route) {
+                    composable(route = TIMER_DESTINATION) {
                         TimerScreen(onFinishGoTo = {
-                                navController.navigateSingleTopTo(RepsCounterDestination.route)
+                                navController.navigateSingleTopTo(REPS_COUNTER_DESTINATION)
                         })
                     }
-                    composable(route = PlannerDestination.route) {
+                    composable(route = PLANNER_DESTINATION) {
                         PlannerScreen()
                     }
-                    composable(route = HomeDestination.route) {
+                    composable(route = HOME_DESTINATION) {
                         HomeScreen(
                             viewModel = homeViewModel,
                             goTo = {route -> navController.navigateSingleTopTo(route)}
                         )
                     }
-                    composable(route = ExercisesDestination.route) {
+                    composable(route = EXERCISES_DESTINATION) {
                         ExercisesScreen(
                             viewModel = exercisesViewModel,
                             goTo = {route -> navController.navigateSingleTopTo(route)}
                         )
                     }
                     composable(
-                        route = "${EditExerciseDestination.route}?exerciseId={exerciseId}",
-                        arguments = listOf(navArgument("exerciseId") { defaultValue = "defaultId"})
+                        route = "$EDIT_EXERCISE_DESTINATION?$EXERCISE_ID_ARGS",
+                        arguments = listOf(navArgument(EXERCISE_ID) { defaultValue = DEFAULT_EXERCISE_ID})
                         //TODO extract to constants: +1 because it already caused one error
                     ) {
                         EditExerciseScreen(
                             popUpScreen = { navController.popBackStack() },
                             viewModel = editExerciseViewModel,
-                            exerciseId = it.arguments?.getString("exerciseId")?: "some-default-value"
+                            exerciseId = it.arguments?.getString(EXERCISE_ID)?: DEFAULT_EXERCISE_ID
                         )
                     }
                     composable(
-                        route = ChooseExerciseDestination.route,
-                        arguments = listOf(navArgument("exerciseId") { defaultValue = "defaultId"})
+                        route = CHOOSE_EXERCISE_DESTINATION
                     ) {
                         ChooseExerciseScreen(
                             viewModel = chooseExerciseViewModel,
