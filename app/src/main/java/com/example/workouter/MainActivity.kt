@@ -18,6 +18,12 @@ import com.example.workouter.screens.edit_exercise.EditExerciseViewModel
 import com.example.workouter.screens.exercises.ExercisesViewModel
 import com.example.workouter.screens.home.HomeScreen
 import com.example.workouter.screens.home.HomeViewModel
+import com.example.workouter.screens.reps_counter.RepsCounterScreen
+import com.example.workouter.screens.reps_counter.RepsCounterViewModel
+import com.example.workouter.screens.timer.TimerScreen
+import com.example.workouter.screens.timer.TimerViewModel
+import com.example.workouter.screens.what_next.WhatNextScreen
+import com.example.workouter.screens.what_next.WhatNextViewModel
 import com.example.workouter.ui.components.*
 import com.example.workouter.ui.theme.WorkouterTheme
 import com.google.firebase.firestore.ktx.firestore
@@ -27,10 +33,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val storageService: StorageService = FirebaseStorageService(Firebase.firestore)
+
+        //TODO viewmodele - jeśli będzie czas to zamienić na dependency injection
         val exercisesViewModel = ExercisesViewModel(storageService)
         val editExerciseViewModel = EditExerciseViewModel(storageService)
         val chooseExerciseViewModel = ChooseExerciseViewModel(storageService)
+        val repsCounterViewModel = RepsCounterViewModel(storageService)
         val homeViewModel = HomeViewModel()
+        val whatNextViewModel = WhatNextViewModel()
+        val timerViewModel = TimerViewModel()
+
         setContent {
             WorkouterTheme {
                 val navController = rememberNavController()
@@ -38,17 +50,23 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     startDestination = HOME_DESTINATION,
                 ) {
-                    composable(route = REPS_COUNTER_DESTINATION) {
-                        RepsCounter(
-                            onSubmitGoTo = {
-                                navController.navigateSingleTopTo(TIMER_DESTINATION)
-                            }
+                    composable(
+                        route = "$REPS_COUNTER_DESTINATION$EXERCISE_ID_ARGS",
+                        arguments = listOf(navArgument(EXERCISE_ID) { defaultValue = DEFAULT_EXERCISE_ID})
+                    ) {
+                        val exerciseId: String = it.arguments?.getString(EXERCISE_ID)?: DEFAULT_EXERCISE_ID
+                        RepsCounterScreen(
+                            viewModel = repsCounterViewModel,
+                            goTo = {route -> navController.navigateSingleTopTo(route)},
+                            exerciseId = exerciseId
                         )
                     }
                     composable(route = TIMER_DESTINATION) {
-                        TimerScreen(onFinishGoTo = {
-                                navController.navigateSingleTopTo(REPS_COUNTER_DESTINATION)
-                        })
+                        timerViewModel.setTimer(5)
+                        TimerScreen(
+                            viewModel = timerViewModel,
+                            goTo = {route -> navController.navigateSingleTopTo(route) },
+                        )
                     }
                     composable(route = PLANNER_DESTINATION) {
                         PlannerScreen()
@@ -66,7 +84,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable(
-                        route = "$EDIT_EXERCISE_DESTINATION?$EXERCISE_ID_ARGS",
+                        route = "$EDIT_EXERCISE_DESTINATION$EXERCISE_ID_ARGS",
                         arguments = listOf(navArgument(EXERCISE_ID) { defaultValue = DEFAULT_EXERCISE_ID})
                         //TODO extract to constants: +1 because it already caused one error
                     ) {
@@ -81,6 +99,14 @@ class MainActivity : ComponentActivity() {
                     ) {
                         ChooseExerciseScreen(
                             viewModel = chooseExerciseViewModel,
+                            goTo = {route -> navController.navigateSingleTopTo(route)}
+                        )
+                    }
+                    composable(
+                        route = WHAT_NEXT_DESTINATION
+                    ) {
+                        WhatNextScreen(
+                            viewModel = whatNextViewModel,
                             goTo = {route -> navController.navigateSingleTopTo(route)}
                         )
                     }

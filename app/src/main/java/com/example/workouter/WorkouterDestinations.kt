@@ -7,6 +7,7 @@ const val HOME_DESTINATION = "homeDestination"
 const val EXERCISES_DESTINATION = "exerciseDestination"
 const val EDIT_EXERCISE_DESTINATION = "editExerciseDestination"
 const val CHOOSE_EXERCISE_DESTINATION = "chooseExerciseDestination"
+const val WHAT_NEXT_DESTINATION = "whatNextDestination"
 
 const val EXERCISE_ID = "exerciseId"
 const val EXERCISE_ID_ARGS = "?$EXERCISE_ID={$EXERCISE_ID}"
