@@ -2,12 +2,22 @@ package com.example.workouter.screens.home
 
 import android.content.ContentValues
 import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.workouter.CHOOSE_EXERCISE_DESTINATION
 import com.example.workouter.EXERCISES_DESTINATION
+import com.example.workouter.model.NewTraining
+import com.example.workouter.model.service.StorageService
+import kotlinx.coroutines.launch
 
-class HomeViewModel {
+class HomeViewModel(
+    val storageService: StorageService
+): ViewModel() {
     fun onStartTrainingClick(goTo: (String) -> Unit) {
         Log.d(ContentValues.TAG, "Click on start training on home screen")
+        viewModelScope.launch {
+            val newTrainingId = storageService.createNewTraining(NewTraining.createNew())
+        }
         goTo(CHOOSE_EXERCISE_DESTINATION)
     }
 

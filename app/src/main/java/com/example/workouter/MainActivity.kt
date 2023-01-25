@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
         val editExerciseViewModel = EditExerciseViewModel(storageService)
         val chooseExerciseViewModel = ChooseExerciseViewModel(storageService)
         val repsCounterViewModel = RepsCounterViewModel(storageService)
-        val homeViewModel = HomeViewModel()
+        val homeViewModel = HomeViewModel(storageService)
         val whatNextViewModel = WhatNextViewModel()
         val timerViewModel = TimerViewModel()
 
@@ -95,11 +95,13 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable(
-                        route = CHOOSE_EXERCISE_DESTINATION
+                        route = "$CHOOSE_EXERCISE_DESTINATION$TRAINING_ID_ARGS",
+                        arguments = listOf(navArgument(EXERCISE_ID) { defaultValue = DEFAULT_TRAINING_ID})
                     ) {
                         ChooseExerciseScreen(
                             viewModel = chooseExerciseViewModel,
-                            goTo = {route -> navController.navigateSingleTopTo(route)}
+                            goTo = {route -> navController.navigateSingleTopTo(route)},
+                            trainingId = it.arguments?.getString(TRAINING_ID)?: DEFAULT_TRAINING_ID
                         )
                     }
                     composable(

@@ -2,6 +2,7 @@ package com.example.workouter.model.service.firebase_implementation
 
 import android.content.ContentValues
 import android.util.Log
+import com.example.workouter.model.NewTraining
 import com.example.workouter.model.Exercise
 import com.example.workouter.model.service.trace
 import com.example.workouter.model.service.StorageService
@@ -37,12 +38,23 @@ class FirebaseStorageService (
         Log.d(ContentValues.TAG, "Request to update exercise with id: ${exercise.id}")
         return trace(UPDATE_TASK_TRACE) { exerciseCollection().document(exercise.id).set(exercise).await() }
     }
+
+    override suspend fun createNewTraining(newTraining: NewTraining): String {
+        Log.d(ContentValues.TAG, "Request to create new training with id: ${newTraining.id}")
+        return trace(SAVE_TRAINING_TRACE) { exerciseTraining().add(newTraining).await().id}
+    }
+
     private fun exerciseCollection(): CollectionReference =
         firestore.collection(EXERCISE_COLLECTION)
+
+    private fun exerciseTraining(): CollectionReference =
+        firestore.collection(TRAINING_COLLECTION)
 
     companion object {
         private const val EXERCISE_COLLECTION = "activities"
         private const val SAVE_TASK_TRACE = "saveTask"
+        private const val SAVE_TRAINING_TRACE = "saveTask"
         private const val UPDATE_TASK_TRACE = "updateTask"
+        private const val TRAINING_COLLECTION = "trainings"
     }
 }

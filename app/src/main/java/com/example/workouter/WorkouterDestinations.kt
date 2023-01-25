@@ -11,4 +11,7 @@ const val WHAT_NEXT_DESTINATION = "whatNextDestination"
 
 const val EXERCISE_ID = "exerciseId"
 const val EXERCISE_ID_ARGS = "?$EXERCISE_ID={$EXERCISE_ID}"
+const val TRAINING_ID = "trainingId"
+const val TRAINING_ID_ARGS = "?$TRAINING_ID={$TRAINING_ID}"
 const val DEFAULT_EXERCISE_ID = "defaultId"
+const val DEFAULT_TRAINING_ID = "defaultId"

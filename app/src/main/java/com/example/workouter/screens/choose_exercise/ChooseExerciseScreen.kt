@@ -18,7 +18,8 @@ import com.example.workouter.ui.theme.Burgundy
 @Composable
 fun ChooseExerciseScreen (
     viewModel: ChooseExerciseViewModel,
-    goTo: (String) -> Unit
+    goTo: (String) -> Unit,
+    trainingId: String
 ) {
     val exercises: State<List<Exercise>> = viewModel.exercises.collectAsStateWithLifecycle(emptyList())
     Surface(
