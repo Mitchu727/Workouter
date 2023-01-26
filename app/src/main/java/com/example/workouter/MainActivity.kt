@@ -1,6 +1,8 @@
 package com.example.workouter
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -9,7 +11,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.workouter.model.service.DefaultTrainingService
 import com.example.workouter.model.service.StorageService
+import com.example.workouter.model.service.TrainingService
 import com.example.workouter.model.service.firebase_implementation.FirebaseStorageService
 import com.example.workouter.screens.choose_exercise.ChooseExerciseScreen
 import com.example.workouter.screens.choose_exercise.ChooseExerciseViewModel
@@ -33,13 +37,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val storageService: StorageService = FirebaseStorageService(Firebase.firestore)
-
+        val trainingService: TrainingService = DefaultTrainingService(storageService)
         //TODO viewmodele - jeśli będzie czas to zamienić na dependency injection
         val exercisesViewModel = ExercisesViewModel(storageService)
         val editExerciseViewModel = EditExerciseViewModel(storageService)
         val chooseExerciseViewModel = ChooseExerciseViewModel(storageService)
-        val repsCounterViewModel = RepsCounterViewModel(storageService)
-        val homeViewModel = HomeViewModel(storageService)
+        val repsCounterViewModel = RepsCounterViewModel(storageService, trainingService)
+        val homeViewModel = HomeViewModel(trainingService)
         val whatNextViewModel = WhatNextViewModel()
         val timerViewModel = TimerViewModel()
 
@@ -51,21 +55,28 @@ class MainActivity : ComponentActivity() {
                     startDestination = HOME_DESTINATION,
                 ) {
                     composable(
-                        route = "$REPS_COUNTER_DESTINATION$EXERCISE_ID_ARGS",
-                        arguments = listOf(navArgument(EXERCISE_ID) { defaultValue = DEFAULT_EXERCISE_ID})
+                        route = "$REPS_COUNTER_DESTINATION?$EXERCISE_ID_ARGS",
+                        arguments = listOf(navArgument(EXERCISE_ID) {
+                            defaultValue = DEFAULT_EXERCISE_ID
+                        })
                     ) {
-                        val exerciseId: String = it.arguments?.getString(EXERCISE_ID)?: DEFAULT_EXERCISE_ID
+                        var exerciseId: String =
+                            it.arguments?.getString(EXERCISE_ID) ?: DEFAULT_EXERCISE_ID
+                        Log.d(ContentValues.TAG, "Main: request to find exercise with id: ${exerciseId}")
+                        Log.d(ContentValues.TAG, it.arguments.toString())
                         RepsCounterScreen(
                             viewModel = repsCounterViewModel,
-                            goTo = {route -> navController.navigateSingleTopTo(route)},
-                            exerciseId = exerciseId
+                            goTo = { route -> navController.navigateSingleTopTo(route) },
+                            exerciseId = exerciseId,
                         )
                     }
-                    composable(route = TIMER_DESTINATION) {
+                    composable(
+                        route = TIMER_DESTINATION
+                    ) {
                         timerViewModel.setTimer(5)
                         TimerScreen(
                             viewModel = timerViewModel,
-                            goTo = {route -> navController.navigateSingleTopTo(route) },
+                            goTo = { route -> navController.navigateSingleTopTo(route) }
                         )
                     }
                     composable(route = PLANNER_DESTINATION) {
@@ -74,34 +85,34 @@ class MainActivity : ComponentActivity() {
                     composable(route = HOME_DESTINATION) {
                         HomeScreen(
                             viewModel = homeViewModel,
-                            goTo = {route -> navController.navigateSingleTopTo(route)}
+                            goTo = { route -> navController.navigateSingleTopTo(route) }
                         )
                     }
                     composable(route = EXERCISES_DESTINATION) {
                         ExercisesScreen(
                             viewModel = exercisesViewModel,
-                            goTo = {route -> navController.navigateSingleTopTo(route)}
+                            goTo = { route -> navController.navigateSingleTopTo(route) }
                         )
                     }
                     composable(
-                        route = "$EDIT_EXERCISE_DESTINATION$EXERCISE_ID_ARGS",
-                        arguments = listOf(navArgument(EXERCISE_ID) { defaultValue = DEFAULT_EXERCISE_ID})
+                        route = "$EDIT_EXERCISE_DESTINATION?$EXERCISE_ID_ARGS",
+                        arguments = listOf(navArgument(EXERCISE_ID) {
+                            defaultValue = DEFAULT_EXERCISE_ID
+                        })
                         //TODO extract to constants: +1 because it already caused one error
                     ) {
                         EditExerciseScreen(
                             popUpScreen = { navController.popBackStack() },
                             viewModel = editExerciseViewModel,
-                            exerciseId = it.arguments?.getString(EXERCISE_ID)?: DEFAULT_EXERCISE_ID
+                            exerciseId = it.arguments?.getString(EXERCISE_ID) ?: DEFAULT_EXERCISE_ID
                         )
                     }
                     composable(
-                        route = "$CHOOSE_EXERCISE_DESTINATION$TRAINING_ID_ARGS",
-                        arguments = listOf(navArgument(EXERCISE_ID) { defaultValue = DEFAULT_TRAINING_ID})
+                        route = CHOOSE_EXERCISE_DESTINATION
                     ) {
                         ChooseExerciseScreen(
                             viewModel = chooseExerciseViewModel,
-                            goTo = {route -> navController.navigateSingleTopTo(route)},
-                            trainingId = it.arguments?.getString(TRAINING_ID)?: DEFAULT_TRAINING_ID
+                            goTo = {route -> navController.navigateV2(route)}
                         )
                     }
                     composable(
@@ -131,6 +142,19 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         }
         launchSingleTop = true
         restoreState = true
+    }
+
+
+fun NavHostController.navigateV2(route: String) =
+//    this.navigate(route)
+    this.navigate(route) {
+        popUpTo(
+            this@navigateV2.graph.findStartDestination().id
+        ) {
+            saveState = false
+        }
+        launchSingleTop = true
+        restoreState = false
     }
 
 

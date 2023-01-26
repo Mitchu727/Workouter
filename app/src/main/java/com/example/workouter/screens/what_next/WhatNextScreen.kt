@@ -17,7 +17,7 @@ import com.example.workouter.ui.theme.Burgundy
 @Composable
 fun WhatNextScreen(
     viewModel: WhatNextViewModel,
-    goTo: (String) -> Unit
+    goTo: (String) -> Unit,
 ) {
     Column {
         Button(

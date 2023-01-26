@@ -16,7 +16,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun TimerScreen(
     goTo: (String) -> Unit,
-    viewModel: TimerViewModel,
+    viewModel: TimerViewModel
 ) {
     var timeLeft = viewModel.timeLeft
     ExerciseTimer(

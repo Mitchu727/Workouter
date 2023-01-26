@@ -4,11 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.workouter.WHAT_NEXT_DESTINATION
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class TimerViewModel(): ViewModel() {
 
@@ -28,20 +24,20 @@ class TimerViewModel(): ViewModel() {
         timeLeft-=1
     }
 
-    fun startTimer(
-        goTo: (String) -> Unit
-    ) {
-        runBlocking {
-        launch {
-            if(timeLeft > 0) {
-                delay(1000L)
-                timeLeft -= 1L
-                println(timeLeft)
-            }
-            if (timeLeft <= 0) {
-                timerFinished(goTo)
-            }
-        }
-    }
-    }
+//    fun startTimer(
+//        goTo: (String) -> Unit
+//    ) {
+//        runBlocking {
+//        launch {
+//            if(timeLeft > 0) {
+//                delay(1000L)
+//                timeLeft -= 1L
+//                println(timeLeft)
+//            }
+//            if (timeLeft <= 0) {
+//                timerFinished(goTo)
+//            }
+//        }
+//    }
+//    }
 }

@@ -6,7 +6,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +23,8 @@ fun RepsCounterScreen(
     goTo: (String) -> Unit,
 ) {
     var repsNumber = viewModel.repsNumber
-    val exercise: Exercise = viewModel.getExercise(exerciseId)
+    val exercise by viewModel.exercise
+    LaunchedEffect(Unit) { viewModel.initialize(exerciseId) }
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
