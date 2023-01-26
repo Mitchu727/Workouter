@@ -11,7 +11,8 @@ interface StorageService {
     suspend fun getExercise(exerciseId: String): Exercise?
     suspend fun saveExercise(exercise: Exercise): String
     suspend fun updateExercise(exercise: Exercise): Unit
-    suspend fun createNewTraining(newTraining: Training): String
+    suspend fun createNewTraining(training: Training): String
     suspend fun getTraining(trainingId: String): Training?
     suspend fun saveTrainingPart(trainingPart: TrainingPart): String
+    suspend fun getTrainingParts(exerciseId: String): List<TrainingPart>
 }

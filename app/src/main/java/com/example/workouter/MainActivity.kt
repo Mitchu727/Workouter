@@ -1,8 +1,6 @@
 package com.example.workouter
 
-import android.content.ContentValues
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -17,6 +15,8 @@ import com.example.workouter.model.service.TrainingService
 import com.example.workouter.model.service.firebase_implementation.FirebaseStorageService
 import com.example.workouter.screens.choose_exercise.ChooseExerciseScreen
 import com.example.workouter.screens.choose_exercise.ChooseExerciseViewModel
+import com.example.workouter.screens.choose_exercise.StatsChooseExerciseScreen
+import com.example.workouter.screens.choose_exercise.StatsChooseExerciseViewModel
 import com.example.workouter.screens.edit_exercise.EditExerciseScreen
 import com.example.workouter.screens.edit_exercise.EditExerciseViewModel
 import com.example.workouter.screens.exercises.ExercisesViewModel
@@ -43,8 +43,9 @@ class MainActivity : ComponentActivity() {
         val editExerciseViewModel = EditExerciseViewModel(storageService)
         val chooseExerciseViewModel = ChooseExerciseViewModel(storageService)
         val repsCounterViewModel = RepsCounterViewModel(storageService, trainingService)
-        val homeViewModel = HomeViewModel(trainingService)
+        val homeViewModel = HomeViewModel(trainingService, storageService)
         val whatNextViewModel = WhatNextViewModel()
+        val statsChooseExerciseViewModel = StatsChooseExerciseViewModel(storageService)
         val timerViewModel = TimerViewModel()
 
         setContent {
@@ -62,8 +63,6 @@ class MainActivity : ComponentActivity() {
                     ) {
                         var exerciseId: String =
                             it.arguments?.getString(EXERCISE_ID) ?: DEFAULT_EXERCISE_ID
-                        Log.d(ContentValues.TAG, "Main: request to find exercise with id: ${exerciseId}")
-                        Log.d(ContentValues.TAG, it.arguments.toString())
                         RepsCounterScreen(
                             viewModel = repsCounterViewModel,
                             goTo = { route -> navController.navigateSingleTopTo(route) },
@@ -112,6 +111,14 @@ class MainActivity : ComponentActivity() {
                     ) {
                         ChooseExerciseScreen(
                             viewModel = chooseExerciseViewModel,
+                            goTo = {route -> navController.navigateV2(route)}
+                        )
+                    }
+                    composable(
+                        route = STATS_CHOOSE_EXERCISE_DESTINATION
+                    ) {
+                        StatsChooseExerciseScreen(
+                            viewModel = statsChooseExerciseViewModel,
                             goTo = {route -> navController.navigateV2(route)}
                         )
                     }

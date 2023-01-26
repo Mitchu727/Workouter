@@ -15,6 +15,7 @@ import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
+import java.util.*
 
 class FirebaseStorageService (
     private val firestore: FirebaseFirestore
@@ -53,6 +54,11 @@ class FirebaseStorageService (
     override suspend fun saveTrainingPart(trainingPart: TrainingPart): String {
         Log.d(ContentValues.TAG, "Request to save training part with id: ${trainingPart.id} of exercise: ${trainingPart.exerciseId} under training: ${trainingPart.trainingId}")
         return trace(SAVE_TRAINING_PART_TRACE){ trainingPartCollection().add(trainingPart).await().id }
+    }
+
+    override suspend fun getTrainingParts(exerciseId: String): List<TrainingPart> {
+        Log.d(ContentValues.TAG, "Request to get training with id: ${exerciseId}")
+        return trainingPartCollection().get().await().toObjects()
     }
 
     private fun exerciseCollection(): CollectionReference =

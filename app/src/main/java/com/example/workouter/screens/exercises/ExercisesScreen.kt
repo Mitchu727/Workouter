@@ -40,7 +40,7 @@ fun ExercisesScreen(
                 modifier = Modifier
                     .padding(vertical = 4.dp)
                     .fillMaxWidth()
-                    .fillMaxHeight(0.8f)
+                    .fillMaxHeight()
             ) {
                 items(exercises.value) { exercise ->
                     ExerciseView(exercise) { viewModel.onExerciseClick(goTo, exercise) }

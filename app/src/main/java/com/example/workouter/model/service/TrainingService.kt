@@ -1,9 +1,13 @@
 package com.example.workouter.model.service
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.example.workouter.model.Training
 
 interface TrainingService {
-    val currentTraining: Training
+    val currentTraining: MutableState<Training>
     suspend fun startNewTraining(): String
     suspend fun getCurrentTraining(): Training
 }
@@ -11,14 +15,15 @@ interface TrainingService {
 class DefaultTrainingService(
     val storageService: StorageService
 ): TrainingService {
-    override var currentTraining = Training()
+    override val currentTraining = mutableStateOf(Training())
     override suspend fun startNewTraining(): String {
-        currentTraining = Training.createNew()
-        return storageService.createNewTraining(currentTraining)
+        currentTraining.value = Training.createNew()
+        val newTraining = currentTraining.value
+        return storageService.createNewTraining(newTraining)
     }
 
     override suspend fun getCurrentTraining():Training {
-        return currentTraining
+        return currentTraining.value
     }
 }
 
