@@ -117,7 +117,6 @@ class MainActivity : ComponentActivity() {
                         //TODO extract to constants: +1 because it already caused one error
                     ) {
                         StatsScreen(
-                            popUpScreen = { navController.popBackStack() },
                             viewModel = statsViewModel,
                             exerciseId = it.arguments?.getString(EXERCISE_ID) ?: DEFAULT_EXERCISE_ID
                         )

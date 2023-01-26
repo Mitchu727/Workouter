@@ -1,10 +1,7 @@
 package com.example.workouter.screens.stats
 
 import StatsViewModel
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -18,16 +15,23 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.workouter.model.TrainingPart
 import com.example.workouter.ui.theme.Burgundy
+import java.text.SimpleDateFormat
+import java.util.Date
+
+fun formatDate(date: Date): String {
+//    val formatter = SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+//    return formatter.format(date)
+    return "$date"
+}
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun StatsScreen (
-    popUpScreen: () -> Unit,
     viewModel: StatsViewModel,
     exerciseId: String
 ) {
     val trainingParts: State<List<TrainingPart>> = viewModel.trainingParts.collectAsStateWithLifecycle(emptyList())
-//    val validTrainingParts = trainingParts.value.filter { it.id == exerciseId }
+    val validTrainingParts = trainingParts.value.filter { it.exerciseId == exerciseId }
     Surface(
         color = Burgundy,
         modifier = Modifier.fillMaxSize()
@@ -38,7 +42,7 @@ fun StatsScreen (
                 .fillMaxWidth()
                 .fillMaxHeight()
         ) {
-            items(trainingParts.value) { trainingPart ->
+            items(validTrainingParts) { trainingPart ->
                 TrainingPartView(trainingPart)
             }
         }
@@ -54,6 +58,9 @@ fun TrainingPartView(
             .fillMaxWidth()
             .padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
-        Text(text = trainingPart.repsCount.toString(), modifier = Modifier.padding(8.dp))
+        Row {
+            Text(text = "${formatDate(trainingPart.date)}: ", modifier = Modifier.padding(8.dp))
+            Text(text = trainingPart.repsCount.toString(), modifier = Modifier.padding(8.dp))
+        }
     }
 }

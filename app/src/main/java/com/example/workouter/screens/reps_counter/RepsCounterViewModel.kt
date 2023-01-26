@@ -13,6 +13,7 @@ import com.example.workouter.model.TrainingPart
 import com.example.workouter.model.service.StorageService
 import com.example.workouter.model.service.TrainingService
 import kotlinx.coroutines.launch
+import java.util.*
 
 class RepsCounterViewModel(
     val storageService: StorageService,
@@ -43,7 +44,8 @@ class RepsCounterViewModel(
                     id = TrainingPart.generateRandomUUID(),
                     exerciseId = exercise.value.id,
                     trainingId = trainingService.getCurrentTraining().id,
-                    repsCount = repsNumber
+                    repsCount = repsNumber,
+                    date = Date()
                 )
             )
         }
