@@ -27,7 +27,7 @@ fun HomeScreen(
         HomeScreenButton(onClick = { viewModel.onStartTrainingClick(goTo) }, text = "Start \nTraining")
         HomeScreenButton(onClick = { viewModel.onExercisesClick(goTo) }, text = "Exercises")
         HomeScreenButton(onClick = { viewModel.onStatsClick(goTo) }, text = "Stats")
-        HomeScreenButton(onClick = { viewModel.onTargetsClick(goTo) }, text = "Targets")
+//        HomeScreenButton(onClick = { viewModel.onTargetsClick(goTo) }, text = "Targets")
     }
 }
 
@@ -42,7 +42,7 @@ fun HomeScreenButton(
         shape = RectangleShape,
         modifier = Modifier
             .fillMaxWidth()
-            .height(150.dp)
+            .height(200.dp)
             .padding(20.dp),
         colors = ButtonDefaults.buttonColors(Color.White)
     ) {

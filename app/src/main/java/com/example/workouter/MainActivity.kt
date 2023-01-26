@@ -1,5 +1,6 @@
 package com.example.workouter
 
+import StatsViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,6 +25,7 @@ import com.example.workouter.screens.home.HomeScreen
 import com.example.workouter.screens.home.HomeViewModel
 import com.example.workouter.screens.reps_counter.RepsCounterScreen
 import com.example.workouter.screens.reps_counter.RepsCounterViewModel
+import com.example.workouter.screens.stats.StatsScreen
 import com.example.workouter.screens.timer.TimerScreen
 import com.example.workouter.screens.timer.TimerViewModel
 import com.example.workouter.screens.what_next.WhatNextScreen
@@ -47,6 +49,7 @@ class MainActivity : ComponentActivity() {
         val whatNextViewModel = WhatNextViewModel()
         val statsChooseExerciseViewModel = StatsChooseExerciseViewModel(storageService)
         val timerViewModel = TimerViewModel()
+        val statsViewModel = StatsViewModel(storageService)
 
         setContent {
             WorkouterTheme {
@@ -103,6 +106,19 @@ class MainActivity : ComponentActivity() {
                         EditExerciseScreen(
                             popUpScreen = { navController.popBackStack() },
                             viewModel = editExerciseViewModel,
+                            exerciseId = it.arguments?.getString(EXERCISE_ID) ?: DEFAULT_EXERCISE_ID
+                        )
+                    }
+                    composable(
+                        route = "$STATS_DESTINATION?$EXERCISE_ID_ARGS",
+                        arguments = listOf(navArgument(EXERCISE_ID) {
+                            defaultValue = DEFAULT_EXERCISE_ID
+                        })
+                        //TODO extract to constants: +1 because it already caused one error
+                    ) {
+                        StatsScreen(
+                            popUpScreen = { navController.popBackStack() },
+                            viewModel = statsViewModel,
                             exerciseId = it.arguments?.getString(EXERCISE_ID) ?: DEFAULT_EXERCISE_ID
                         )
                     }

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface StorageService {
     val exercises: Flow<List<Exercise>>
+    val trainingParts: Flow<List<TrainingPart>>
     suspend fun getAllExercises(): List<Exercise>
     suspend fun getExercise(exerciseId: String): Exercise?
     suspend fun saveExercise(exercise: Exercise): String

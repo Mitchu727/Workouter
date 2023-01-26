@@ -15,7 +15,6 @@ import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import java.util.*
 
 class FirebaseStorageService (
     private val firestore: FirebaseFirestore
@@ -23,6 +22,9 @@ class FirebaseStorageService (
 
     override val exercises: Flow<List<Exercise>>
         get() = exerciseCollection().snapshots() .map { snapshot -> snapshot.toObjects() }
+
+    override val trainingParts: Flow<List<TrainingPart>>
+        get() = trainingPartCollection().snapshots().map { snapshot -> snapshot.toObjects() }
 
     override suspend fun getAllExercises(): List<Exercise> =
         exerciseCollection().get().await().toObjects()
@@ -71,7 +73,7 @@ class FirebaseStorageService (
         firestore.collection(TRAINING_PART_COLLECTION)
 
     companion object {
-        private const val EXERCISE_COLLECTION = "activities"
+        private const val EXERCISE_COLLECTION = "exercises"
         private const val SAVE_TASK_TRACE = "saveTask"
         private const val SAVE_TRAINING_TRACE = "saveTraining"
         private const val SAVE_TRAINING_PART_TRACE = "saveTrainingPart"
